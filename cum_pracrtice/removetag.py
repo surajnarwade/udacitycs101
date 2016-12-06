@@ -11,11 +11,18 @@
 
 def remove_tags(string):
     start=string.find('<')
+<<<<<<< HEAD
     while start!=-1:
      end=string.find('>',start)
      string=string[:start]+" "+string[end+1:]
      start=string.find('<')
     return string.split()
+=======
+    
+    end=string.find('>',start)
+    return string[end+1:]
+
+>>>>>>> 75c5184a0a45410697da79d5a55bea3ff2dfdeeb
 
 print remove_tags('''<h1>Title</h1><p>This is a
                     <a href="http://www.udacity.com">link</a>.<p>''')
