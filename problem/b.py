@@ -1,10 +1,11 @@
 import urllib
+import os
 from BeautifulSoup import BeautifulSoup as bs
 #list=[]
-URL = 'http://localhost:8000/'
+URL = 'http://localhost:8000/index.html'
 
 def extract_link(uri):
- url = urllib.urlopen(URL)
+ url = urllib.urlopen(uri)
  content=url.read()
  soup=bs(content)
  lis=[]
@@ -12,7 +13,7 @@ def extract_link(uri):
        lis.append(str(tag['href']))
  return lis
 
-def union(p,q):
+def common(p,q):
     for i in q:
         if i not in p:
             p.append(i)
@@ -26,12 +27,12 @@ def crawl_web(url):
       page=tocrawl.pop()
       if page not in crawled:
          le=extract_link(page)
-         union(tocrawl, le)
+         common(tocrawl, le)
          #if page!='http://localhost:8000/':
          #   page='http://localhost:8000/'+page
          crawled.append(page)
          withcount[page]=le
-  return crawled, withcount
+  return withcount
 
 print('---------------------')
 print crawl_web(URL)
