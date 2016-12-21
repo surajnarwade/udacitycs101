@@ -38,7 +38,6 @@ def crawl_web(url):
 crawl, withcount = crawl_web(URL)
 #print crawl
 #print('---------------------')
-#print withcount
 
 ic={};oc={}
 
