@@ -1,7 +1,7 @@
 import urllib
 import os
 from BeautifulSoup import BeautifulSoup as bs
-#list=[]
+
 URL = 'http://localhost:8000/index.html'
 
 def extract_link(uri):
@@ -28,10 +28,8 @@ def crawl_web(url):
       if page not in crawled:
          le=extract_link(page)
          common(tocrawl, le)
-         #if page!='http://localhost:8000/':
-         #   page='http://localhost:8000/'+page
          crawled.append(page)
-         withcount[page]=[le,len(le)]
+         withcount[page]=le
   return crawled, withcount
 
 print('---------------------')
@@ -39,18 +37,16 @@ crawl, withcount = crawl_web(URL)
 print crawl
 print('---------------------')
 print withcount
-print('---------------------')
-for i in crawl:
-    print i
-print('-------------------------')
 
-oc={}
+ic={};oc={}
+
 for i in crawl:
  count=0
  for key, value in withcount.iteritems():
-   if i in value[0]:
+   if i in value:
        count=count+1
    oc[i]=count
+   ic[key]=len(value)
 
-print oc
-
+print 'outgoing count of each unique URL is', ic
+print 'incoming count of each unique URL is', oc

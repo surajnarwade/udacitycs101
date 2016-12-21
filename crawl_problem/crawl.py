@@ -1,10 +1,8 @@
 import urllib
 from urlparse import urljoin
-import os
 from BeautifulSoup import BeautifulSoup as bs
-#list=[]
+
 URL = 'http://localhost:8000/index.html'
-base_url='http://localhost:8000'
 def extract_link(uri):
  url = urllib.urlopen(uri)
  content=url.read()
@@ -13,10 +11,8 @@ def extract_link(uri):
  for tag in soup.findAll('a', href=True):
        link=tag.get('href')
        if not link.startswith('http'):
-           link=urljoin(base_url, link)
-       #lis.append(str(tag['href']))
+              link=urljoin(URL, link)
        lis.append(str(link))
-
  return lis
 
 def common(p,q):
@@ -35,26 +31,25 @@ def crawl_web(url):
          le=extract_link(page)
          common(tocrawl, le)
          crawled.append(page)
-         withcount[page]=[le,len(le)]
+         withcount[page]=le
   return crawled, withcount
 
-print('---------------------')
+#print('---------------------')
 crawl, withcount = crawl_web(URL)
-print crawl
-print('---------------------')
-print withcount
-print('---------------------')
-for i in crawl:
-    print i
-print('-------------------------')
+#print crawl
+#print('---------------------')
+#print withcount
 
-oc={}
+ic={};oc={}
+
 for i in crawl:
  count=0
  for key, value in withcount.iteritems():
-   if i in value[0]:
+   if i in value:
        count=count+1
    oc[i]=count
+   ic[key]=len(value)
 
-print oc
+print 'outgoing count of each unique URL is', ic
 
+print 'incoming count of each unique URL is', oc
