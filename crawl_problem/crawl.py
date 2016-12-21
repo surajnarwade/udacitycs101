@@ -26,26 +26,30 @@ def union(tocrawl, extracted_links):
             tocrawl.append(i)
 
 
-def crawl_web(url):
+def crawl_web(url, max_depth):
     tocrawl = [url]
     crawled = []
+    next_depth=[]
+    depth=0
     withcount = {}
-    while tocrawl:
+    while tocrawl and depth<=max_depth:
         page = tocrawl.pop()
         if page not in crawled:
             links = extract_link(page)
-            union(tocrawl, links)
+            union(next_depth, links)
             crawled.append(page)
             withcount[page] = [links, len(links), 0]
+        if not tocrawl:
+            tocrawl, next_depth = next_depth, []
+            depth+=1
     return crawled, withcount
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='basic crawler')
-    parser.add_argument('--url',  help='Your URL goes here')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--depth', type=int, help='Your depth goes here')
+    parser.add_argument('--url', help='Your URL goes here')
     args = parser.parse_args()
-    if args.url:
-      crawl, withcount = crawl_web(args.url)
-
+    crawl, withcount = crawl_web(args.url, args.depth)
     for i in crawl:
         count = 0
         for key, value in withcount.iteritems():
