@@ -31,24 +31,17 @@ def crawl_web(url):
          le=extract_link(page)
          common(tocrawl, le)
          crawled.append(page)
-         withcount[page]=le
+         withcount[page]=[le,len(le),0]
   return crawled, withcount
 
-#print('---------------------')
 crawl, withcount = crawl_web(URL)
-#print crawl
-#print('---------------------')
-
-ic={};oc={}
 
 for i in crawl:
  count=0
  for key, value in withcount.iteritems():
-   if i in value:
+   if i in value[0]:
        count=count+1
-   oc[i]=count
-   ic[key]=len(value)
+   withcount[i][2]=count
 
-print 'outgoing count of each unique URL is', ic
-
-print 'incoming count of each unique URL is', oc
+for i in withcount:
+    print '{},outgoing={},incoming={}'.format(i,withcount[i][1],withcount[i][2])
