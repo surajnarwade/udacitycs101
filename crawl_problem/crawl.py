@@ -13,9 +13,13 @@ def extract_link(uri):
     lis = []
     for tag in soup.findAll('a', href=True):
         link = tag.get('href')
-        if not link.startswith('http'):
+        if link.startswith('mailto') or link.startswith('javascript'):
+            pass
+        elif not link.startswith('http'):
             link = urljoin(uri, link)
-        lis.append(link)
+            lis.append(link.encode('utf-8'))
+        else:
+            lis.append(link.encode('utf-8'))
     return lis
 
 
